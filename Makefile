@@ -1,4 +1,4 @@
-FILENAME =main.cpp
+FILENAME =test.cpp
 SRC      =./$(FILENAME)
 EXE      =exefile.exe
 MARCH    =x86-64

@@ -6,7 +6,7 @@ template<
     typename T = double
     >
 class TrapezoidRule
-    :IntegralSolver<T>
+    :public IntegralSolver<T>
 {
     T method_imp(const std::function<T(T)>& func, const T a, const T b, const int n) const final {
         const T delta = (b - a) / n;
@@ -28,7 +28,9 @@ class TrapezoidRule
         return resnp1;
     }
 public:
-    constexpr TrapezoidRule() noexcept = default;
+    constexpr TrapezoidRule() noexcept
+        : IntegralSolver<T>()
+        {}
 
     constexpr TrapezoidRule(const TrapezoidRule<T>&) noexcept = default;
     constexpr TrapezoidRule(TrapezoidRule<T>&&) noexcept = default;

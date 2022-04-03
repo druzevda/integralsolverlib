@@ -6,7 +6,7 @@ template<
     typename T = double
     >
 class RectangleRule
-    :IntegralSolver<T>
+    : public IntegralSolver<T>
 {
     T method_imp(const std::function<T(T)>& func, const T a, const T b, const int n) const final {
         const T delta = (b - a) / n;
@@ -22,15 +22,16 @@ class RectangleRule
         T resnp1 = 0.0;
         T resn   = 0.0;
         int n = 2;
-        do {
-            resn   = resnp1;
+        do { resn   = resnp1;
             resnp1 = this->method_imp(func,a,b,n);
             n *= 2;
         } while (std::abs(resn-resnp1) > eps);
         return resnp1;
     }
 public:
-    constexpr RectangleRule() noexcept = default;
+    constexpr RectangleRule()
+        :IntegralSolver<T>()
+    {}
 
     constexpr RectangleRule(const RectangleRule<T>&) noexcept = default;
     constexpr RectangleRule(RectangleRule<T>&&) noexcept = default;

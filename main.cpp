@@ -1,11 +1,12 @@
 #include <iostream>
 #include "rectangle_rule.hxx"
 #include "trapezoid_rule.hxx"
+#include "simpson_rule.hxx"
 int main(){
     constexpr double a = 0.0;
     constexpr double b = 1.0;
 
-    const TrapezoidRule solver;
+    const SimpsonRule solver;
 
     auto f = [](const double x)
         constexpr noexcept -> double

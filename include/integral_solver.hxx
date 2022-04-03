@@ -24,7 +24,6 @@ public:
     constexpr IntegralSolver<T>&
         operator=(IntegralSolver<T>&&) noexcept = default;
 
-
     virtual T get_solution(const std::function<T(T)>& func, const T a, const T b, const T eps = 1.0e-10) const {
         return this->calc_integral(func,a,b,eps);
     }
