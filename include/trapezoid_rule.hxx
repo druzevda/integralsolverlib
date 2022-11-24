@@ -3,10 +3,11 @@
 
 #include "integral_solver.hxx"
 template<
-    typename T = double
+    typename ArgT = double
+    typename RetT = double
     >
 class TrapezoidRule
-    :public IntegralSolver<T>
+    :public IntegralSolver<ArgT,RetT>
 {
     T method_imp(const std::function<T(T)>& func, const T a, const T b, const int n) const final {
         const T delta = (b - a) / n;

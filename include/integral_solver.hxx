@@ -4,27 +4,29 @@
 #include "basic_libs.hxx"
 
 template<
-    typename T = double
+    typename ArgT = double,
+    typename RetT = double
     >
 class IntegralSolver{
 protected:
-    virtual T method_imp(const std::function<T(T)>& func, const T a, const T b, const int n) const = 0;
-    virtual T calc_integral(const std::function<T(T)>& func, const T a, const T b, const T eps) const = 0;
+    using integratedFunc = std::function<RetT(const ArgT&)>;
+    virtual RetT method_imp(const integratedFunc& func, const ArgT& a, const ArgT& b, const int n) const = 0;
+    virtual RetT calc_integral(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps) const = 0;
 public:
     constexpr IntegralSolver() noexcept = default;
 
-    constexpr IntegralSolver(const IntegralSolver<T>&) noexcept = default;
-    constexpr IntegralSolver(IntegralSolver<T>&&) noexcept = default;
+    constexpr IntegralSolver(const IntegralSolver<ArgT,RetT>&) noexcept = default;
+    constexpr IntegralSolver(IntegralSolver<ArgT,RetT>&&) noexcept = default;
 
     virtual ~IntegralSolver() noexcept = default;
 
-    constexpr IntegralSolver<T>&
-        operator=(const IntegralSolver<T>&) noexcept = default;
+    constexpr IntegralSolver<ArgT,RetT>&
+        operator=(const IntegralSolver<ArgT,RetT>&) noexcept = default;
 
-    constexpr IntegralSolver<T>&
-        operator=(IntegralSolver<T>&&) noexcept = default;
+    constexpr IntegralSolver<ArgT,RetT>&
+        operator=(IntegralSolver<ArgT,RetT>&&) noexcept = default;
 
-    virtual T get_solution(const std::function<T(T)>& func, const T a, const T b, const T eps = 1.0e-10) const {
+    virtual RetT get_solution(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps = 1.0e-10) const {
         return this->calc_integral(func,a,b,eps);
     }
 };
