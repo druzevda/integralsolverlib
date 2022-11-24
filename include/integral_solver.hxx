@@ -10,8 +10,18 @@ template<
 class IntegralSolver{
 protected:
     using integratedFunc = std::function<RetT(const ArgT&)>;
-    virtual RetT method_imp(const integratedFunc& func, const ArgT& a, const ArgT& b, const int n) const = 0;
-    virtual RetT calc_integral(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps) const = 0;
+    virtual RetT method_imp(const integratedFunc& func, const ArgT& a, const ArgT& b, const int n) const noexcept = 0;
+    virtual RetT calc_integral(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps) const noexcept{
+        RetT resnp1 = 0.0;
+        RetT resn   = 0.0;
+        int n = 2;
+        do {
+            resn   = resnp1;
+            resnp1 = this->method_imp(func,a,b,n);
+            n *= 2;
+        } while (std::abs(resn-resnp1) > eps);
+        return resnp1;
+    }
 public:
     constexpr IntegralSolver() noexcept = default;
 
@@ -26,7 +36,7 @@ public:
     constexpr IntegralSolver<ArgT,RetT>&
         operator=(IntegralSolver<ArgT,RetT>&&) noexcept = default;
 
-    virtual RetT get_solution(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps = 1.0e-10) const {
+    virtual RetT get_solution(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps = 1.0e-10) const noexcept {
         return this->calc_integral(func,a,b,eps);
     }
 };

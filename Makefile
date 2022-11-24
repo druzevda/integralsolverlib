@@ -1,6 +1,6 @@
 FILENAME =test.cpp
 SRC      =./$(FILENAME)
-EXE      =exefile.exe
+EXE      =./exefile.exe
 MARCH    =x86-64
 MTUNE    =intel
 
@@ -14,14 +14,13 @@ FLAGS= -march=$(MARCH) -mtune=$(MTUNE) -std=$(STD) -fomit-frame-pointer -fexpens
 all:debug
 
 debug: clean
-	$(CC) $(INCLUDE) $(LIBS) $(FLAGS) $(SRC) -o $(EXE)
-	./$(EXE)
-	rm -rf ./$(EXE)
+	@$(CC) $(INCLUDE) $(LIBS) $(FLAGS) $(SRC) -o $(EXE)
+	@valgrind -q --show-reachable=yes --leak-check=full --error-exitcode=-1 --exit-on-first-error=no $(EXE)
 
 release: clean
 	(CC) $(INCLUDE) $(LIBS)  $(FLAGS) $(SRC) -DNDEBUG -o $(EXE)
-	./$(EXE)
-	rm -rf ./$(EXE)
+	$(EXE)
 
 clean:
-	rm -rf ./$(EXE)
+	clear
+	rm -f $(EXE)

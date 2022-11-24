@@ -11,7 +11,7 @@ class RectangleRule
 {
     using integratedFunc = typename IntegralSolver<ArgT,RetT>::integratedFunc;
 
-    RetT method_imp(const integratedFunc& func, const ArgT& a, const ArgT& b, const int n) const override {
+    RetT method_imp(const integratedFunc& func, const ArgT& a, const ArgT& b, const int n) const noexcept override {
         const ArgT& delta = (b - a) / n;
         RetT res         = RetT{0};
         for (int i = 0; i < n; ++i) {
@@ -21,19 +21,8 @@ class RectangleRule
         }
         return res * delta;
     }
-    RetT calc_integral(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps) const override{
-        RetT resnp1 = 0.0;
-        RetT resn   = 0.0;
-        int n = 2;
-        do {
-          resn   = resnp1;
-          resnp1 = this->method_imp(func,a,b,n);
-          n *= 2;
-        } while (std::abs(resn-resnp1) > eps);
-        return resnp1;
-    }
 public:
-    constexpr RectangleRule()
+    constexpr RectangleRule() noexcept
         :IntegralSolver<ArgT,RetT>()
     {}
 
@@ -47,9 +36,5 @@ public:
 
     constexpr RectangleRule<ArgT,RetT>&
         operator=(RectangleRule<ArgT,RetT>&&) noexcept = default;
-
-    RetT get_solution(const integratedFunc& func, const ArgT& a, const ArgT& b, const RetT& eps = 1.0e-10) const {
-        return this->calc_integral(func,a,b,eps);
-    }
 };
 #endif // RECTANGLE_RULE_INCLUDE_HXX
