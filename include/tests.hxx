@@ -9,10 +9,13 @@ constexpr bool are_equal(const T lhs, const T rhs, const T eps = 1e-7){
 template<
     typename ArgT = double,
     typename RetT = double
-    >
+  >
 class IntegralTest{
+  public:
   using integratedFunction = std::function<RetT(ArgT)>;
   using exactSolution      = std::function<RetT(ArgT,ArgT)>;
+
+  private:
   const integratedFunction integrFunct;
   const exactSolution      exSolution;
 
